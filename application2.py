@@ -70,7 +70,7 @@ class Application2:
         wd.find_element_by_name("byear").send_keys(contact.byear)
         # submit contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
-        self.return_to_homepage(wd)
+        self.return_to_homepage()
 
     def add_new_contact(self):
         wd = self.wd
