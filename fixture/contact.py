@@ -1,19 +1,10 @@
-from selenium.webdriver.firefox.webdriver import WebDriver
-class Application2:
+class ContactHelper:
 
-    def __init__(self):
-        self.wd = WebDriver(capabilities={"marionette": False})
-        self.wd.implicitly_wait(60)
-    def logout(self):
-        wd = self.wd
-        wd.find_element_by_link_text("Logout").click()
-
-    def return_to_homepage(self):
-        wd = self.wd
-        wd.find_element_by_link_text("home page").click()
+    def __init__(self, app):
+        self.app = app
 
     def create_contact(self, contact):
-        wd = self.wd
+        wd = self.app.wd
         self.add_new_contact()
         # fill new contact
         wd.find_element_by_name("firstname").click()
@@ -72,25 +63,10 @@ class Application2:
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.return_to_homepage()
 
+    def return_to_homepage(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("home page").click()
+
     def add_new_contact(self):
-        wd = self.wd
+        wd = self.app.wd
         wd.find_element_by_link_text("add new").click()
-
-    def login(self, name, password):
-        wd = self.wd
-        self.open_home_page()
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(name)
-        wd.find_element_by_id("LoginForm").click()
-        wd.find_element_by_name("pass").click()
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
-
-    def open_home_page(self):
-        wd = self.wd
-        wd.get("http://localhost/addressbook/index.php")
-
-    def destroy(self):
-        self.wd.quit()
