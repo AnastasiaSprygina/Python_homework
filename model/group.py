@@ -1,7 +1,7 @@
 class Group:
 
-    def __init__(self, name, group_header, footer):
+    def __init__(self, name=None, group_header=None, footer=None):
         self.name = name
-        self.group_header = group_header
+        self.header = group_header
         self.footer = footer
 
