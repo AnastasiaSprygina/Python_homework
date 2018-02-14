@@ -52,6 +52,8 @@ class ContactHelper:
 
     def find_home(self):
         wd = self.app.wd
+        if wd.current_url.endswith("/index.php"):
+            return
         wd.find_element_by_link_text('home').click()
 
     def delete_first_contact(self):
