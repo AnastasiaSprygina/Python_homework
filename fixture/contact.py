@@ -12,6 +12,7 @@ class ContactHelper:
         # submit contact creation
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
         self.return_to_homepage()
+        self.contact_cache = None
 
     def fill_new_contact(self, contact):
         wd = self.app.wd
@@ -52,6 +53,7 @@ class ContactHelper:
         self.find_home()
         wd.find_element_by_link_text("add new").click()
 
+
     def find_home(self):
         wd = self.app.wd
         if wd.current_url.endswith("/index.php"):
@@ -64,6 +66,7 @@ class ContactHelper:
         self.select_first_contact()
         wd.find_element_by_xpath("//input[@value='Delete'][@type='button']").click()
         wd.switch_to_alert().accept()
+        self.contact_cache = None
 
     def select_first_contact(self):
         wd = self.app.wd
@@ -79,23 +82,27 @@ class ContactHelper:
         self.fill_new_contact(new_contact_data)
         wd.find_element_by_xpath("//input[@name='update'][@type='submit']").click()
         self.return_to_homepage()
+        self.contact_cache = None
 
     def count(self):
         wd = self.app.wd
         self.find_home()
         return len(wd.find_elements_by_name("selected[]"))
 
+    contact_cache = None
+
     def get_contact_list(self):
-        wd = self.app.wd
-        self.find_home()
-        contacts = []
-        for element in wd.find_elements_by_name("entry"):
-            cells = element.find_elements_by_tag_name("td")
-            text = cells[1].text
-            text1 = cells[2].text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            contacts.append(Contact(lastname=text, id=id, firstname=text1))
-        return contacts
+        if self.contact_cache is None:
+            wd = self.app.wd
+            self.find_home()
+            self.contact_cache = []
+            for element in wd.find_elements_by_name("entry"):
+                cells = element.find_elements_by_tag_name("td")
+                text = cells[1].text
+                text1 = cells[2].text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.contact_cache.append(Contact(lastname=text, id=id, firstname=text1))
+        return list(self.contact_cache)
 
 
 
