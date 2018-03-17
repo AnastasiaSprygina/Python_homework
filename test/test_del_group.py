@@ -1,3 +1,4 @@
+
 from model.group import Group
 import random
 
